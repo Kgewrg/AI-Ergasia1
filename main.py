@@ -3,7 +3,7 @@ import parseLabyrinthBasic
 
 counter = 0
 
-
+#change
 def test():
     print(totalLines)
     print(totalColumns)
