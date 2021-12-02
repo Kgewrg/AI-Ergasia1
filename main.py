@@ -1,10 +1,12 @@
 from nodes import Nodes
 import parseLabyrinthBasic
+import printing
 
 counter = 0
 
-#change
-#change 2
+
+# change
+
 def test():
     print(totalLines)
     print(totalColumns)
@@ -13,14 +15,14 @@ def test():
 def nodecounter():
     global counter
     counter += 1
-    #print("Nodes:", counter)
+    # print("Nodes:", counter)
 
 
 def makeQueue(node, queue):
     tmpQ = queue
     i = node.state[0]
     j = node.state[1]
-    print("i=", i, "j=", j)
+    print("node state:", node.state)
 
     if (i + 1 < totalLines and labyrinth[i + 1][j] != "X"):
         tmpNode = Nodes([i + 1, j], node.state, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
@@ -65,28 +67,37 @@ def makeQueue(node, queue):
     return tmpQ
 
 
-[labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth_small_small.txt")
+[labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth.txt")
 
-startNode = Nodes([0, 0], [-1,-1], 0, 0, "S")
+startNode = Nodes([0, 0], [-1, -1], 0, 0, "S")
 queue = makeQueue(startNode, [])
 nodecounter()
 quepos = 1
 tmpNode = queue[0]
 previouslyvisited = []
 
-repeats=0 # prosorino, to ebales gia na exeis ligotera prints
-while (tmpNode.value != 'G' and repeats<3):
-    print(quepos, ":", tmpNode.value, ":")
+repeats = 0  # prosorino, to ebales gia na exeis ligotera prints
+while (tmpNode.value != 'G' and repeats<10):
+    #print(quepos, ":", tmpNode.value, ":")
     makeQueue(tmpNode, queue)
-    previouslyvisited.append(queue.pop(0)) # afairei ton komvo pou e3etasame prin
+    previouslyvisited.append(queue.pop(0))  # afairei ton komvo pou e3etasame prin
     queue = sorted(queue, key=lambda Nodes: Nodes.cost)
     tmpNode = queue[0]
-    # for i in previouslyvisited: #kwdikas gia na krataei poious komvous exoume elegjei
-    #   if i.state==tmpNode.state:
-    #      queue.pop(0)
-    #     tmpNode=queue[0]
+
+    # kwdikas gia na krataei poious komvous exoume elegjei
+    for i in previouslyvisited:
+        if i.state == tmpNode.state:
+            print("i.state:", tmpNode.state)
+            print("tmpNode:", tmpNode.state)
+            printing.printQueueState(queue)
+            tmp = queue.pop()
+            print("popped: ")
+            tmp.printclass()
+            tmpNode = queue[0]
+            print("New tmpNode: ")
+            tmpNode.printclass()
     quepos += 1
-    repeats+=1
+    repeats += 1
 
 print("Finished")
 print("Katastasi tis ypoloipis ouras")
@@ -96,4 +107,3 @@ for i in queue:
 print("thesi tis katastasi stoxou")
 print(quepos, ":", tmpNode.value, ":")
 print("Congratulations you found it!! State:", tmpNode.state)
-
