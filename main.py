@@ -5,8 +5,6 @@ import printing
 counter = 0
 
 
-# change
-
 def test():
     print(totalLines)
     print(totalColumns)
@@ -19,10 +17,15 @@ def nodecounter():
 
 
 def makeQueue(node, queue):
+    """
+    Βρισκει τι διαθέσιμες κινήσεις μπορουμε να κάνουμε απο την κατάσταση του node και τις επεκτείνει.
+    :param node: nodes, Κόμβος που θα επεκταθεί
+    :param queue: πίνακας, Ουρά οπου θα αποθυκευτούν οι νέοι κομβοι
+    """
     tmpQ = queue
     i = node.state[0]
     j = node.state[1]
-    print("node state:", node.state)
+    print("expanding node:", node.state, "to")
 
     if (i + 1 < totalLines and labyrinth[i + 1][j] != "X"):
         tmpNode = Nodes([i + 1, j], node.state, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
@@ -32,6 +35,7 @@ def makeQueue(node, queue):
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
         tmpQ.append(tmpNode)
+        print("tmpNode that was appended:", tmpNode.state)
         del tmpNode
 
     if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X"):
@@ -42,6 +46,7 @@ def makeQueue(node, queue):
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
         tmpQ.append(tmpNode)
+        print("tmpNode that was appended:", tmpNode.state)
         del tmpNode
 
     if (i - 1 >= 0 and labyrinth[i - 1][j] != "X"):
@@ -52,6 +57,7 @@ def makeQueue(node, queue):
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
         tmpQ.append(tmpNode)
+        print("tmpNode that was appended:", tmpNode.state)
         del tmpNode
 
     if (j - 1 >= 0 and labyrinth[i][j - 1] != "X"):
@@ -62,8 +68,11 @@ def makeQueue(node, queue):
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
         tmpQ.append(tmpNode)
+        print("tmpNode that was appended:", tmpNode.state)
         del tmpNode
 
+        print("tempory Que:")
+        printing.printQueueState(queue)
     return tmpQ
 
 
@@ -77,8 +86,8 @@ tmpNode = queue[0]
 previouslyvisited = []
 
 repeats = 0  # prosorino, to ebales gia na exeis ligotera prints
-while (tmpNode.value != 'G' and repeats<10):
-    #print(quepos, ":", tmpNode.value, ":")
+while (tmpNode.value != 'G' and repeats < 10):
+    # print(quepos, ":", tmpNode.value, ":")
     makeQueue(tmpNode, queue)
     previouslyvisited.append(queue.pop(0))  # afairei ton komvo pou e3etasame prin
     queue = sorted(queue, key=lambda Nodes: Nodes.cost)
