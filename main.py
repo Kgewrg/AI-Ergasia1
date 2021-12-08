@@ -2,7 +2,9 @@ from nodes import Nodes
 import parseLabyrinthBasic
 import printing
 
-totalnodes=0
+totalnodes = 0
+
+
 def makeQueue(node, queue):
     """
     Βρισκει τι διαθέσιμες κινήσεις μπορουμε να κάνουμε απο την κατάσταση του node και τις επεκτείνει.
@@ -13,7 +15,7 @@ def makeQueue(node, queue):
     tmpQ = queue
     i = node.state[0]
     j = node.state[1]
-    print("expanding node:", node.state, "to")
+    # print("expanding node:", node.state, "to")
 
     if (i + 1 < totalLines and labyrinth[i + 1][j] != "X"):
         tmpNode = Nodes([i + 1, j], node.state, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
@@ -23,7 +25,7 @@ def makeQueue(node, queue):
             tmpNode.cost += 1
         if tmpNode.state != node.fathernode:
             tmpQ.append(tmpNode)
-            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
         del tmpNode
 
     if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X"):
@@ -35,7 +37,7 @@ def makeQueue(node, queue):
 
         if tmpNode.state != node.fathernode:
             tmpQ.append(tmpNode)
-            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
         del tmpNode
 
     if (i - 1 >= 0 and labyrinth[i - 1][j] != "X"):
@@ -47,7 +49,7 @@ def makeQueue(node, queue):
 
         if tmpNode.state != node.fathernode:
             tmpQ.append(tmpNode)
-            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
         del tmpNode
 
     if (j - 1 >= 0 and labyrinth[i][j - 1] != "X"):
@@ -59,21 +61,20 @@ def makeQueue(node, queue):
 
         if tmpNode.state != node.fathernode:
             tmpQ.append(tmpNode)
-            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
         del tmpNode
 
-    totalnodes+=len(tmpQ)
+    totalnodes += len(tmpQ)
     return tmpQ
 
 
-[labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth_small.txt")
+[labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth.txt")
 previouslyvisited = []
 startNode = Nodes([0, 0], [-1, -1], 0, 0, "S")
 queue = makeQueue(startNode, [])
 quepos = 1
 tmpNode = queue[0]
-# previouslyvisited.append(queue.pop(0))
-
+previouslyvisited.append(startNode)
 
 repeats = 0  # prosorino, to ebales gia na exeis ligotera prints
 while (tmpNode.value != 'G'):
@@ -92,17 +93,27 @@ while (tmpNode.value != 'G'):
     #             queue.pop(c)
     #     c+=1
 
-    printing.printQueueState(queue)
+    # printing.printQueueState(queue)
     tmpNode = queue[0]
     quepos += 1
     repeats += 1
 
-print("Finished")
-print("Total nodes created", repeats) # Οι κομβοι που δημιουργιθηκαν ειναι οι επαναλήψεις του while
-print("Congratulations you found it!! State:", tmpNode.state)
-print("Cost:", tmpNode.cost)
+# Στο tmpNode βρησκεται η κατάσταση στόχου
+print("Finished, Goal State:")
+tmpNode.printclass()
+print("Total nodes created", repeats)  # Οι κομβοι που δημιουργιθηκαν ειναι οι επαναλήψεις του while
 print("total nodes expanded:", totalnodes)
-print("previusly:", printing.printQueueState(previouslyvisited))
 
-
-
+bcNode = tmpNode
+path = ''
+# Εκμεταλευεται το fathernode
+while (bcNode.value != 'S'):
+    path = path + str(bcNode.state) + ' -> '
+    # Κάθε επανάληψη ψάχνουμε ποιος κομβός εχει την κατάσταση
+    # fathernode απο τον τορινο
+    for i in previouslyvisited:
+        if i.state == bcNode.fathernode:
+            bcNode = i
+            # Αυτος που έχει την σωστή κατάσταση γίνεται ο επομενος τορινος
+path = path + str(bcNode.state)
+print(path)
