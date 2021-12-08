@@ -15,7 +15,7 @@ class Nodes:
 
     def printclass(self):
         print("State:", self.state,
-              "Fathernde:", self.fathernode,
+              "Fathernde:", self.fathernode.state,
               "Cost:", self.cost,
               "Depth:", self.depth,
               "Value:", self.value)
