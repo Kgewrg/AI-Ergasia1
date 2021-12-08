@@ -15,54 +15,57 @@ def makeQueue(node, queue):
     tmpQ = queue
     i = node.state[0]
     j = node.state[1]
-    # print("expanding node:", node.state, "to")
+    print("expanding node:", node.state, "to")
 
     if (i + 1 < totalLines and labyrinth[i + 1][j] != "X"):
-        tmpNode = Nodes([i + 1, j], node.state, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
+        tmpNode = Nodes([i + 1, j], node, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
         tmpNode.depth += 1
         tmpNode.cost += 1
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
-        if tmpNode.state != node.fathernode:
+
+        if tmpNode.state != node.fathernode.state:
             tmpQ.append(tmpNode)
-            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode.state)
         del tmpNode
 
     if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X"):
-        tmpNode = Nodes([i, j + 1], node.state, node.cost, node.depth, labyrinth[i][j + 1])  # moved "right"
+        tmpNode = Nodes([i, j + 1], node, node.cost, node.depth, labyrinth[i][j + 1])  # moved "right"
         tmpNode.depth += 1
         tmpNode.cost += 1
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
 
-        if tmpNode.state != node.fathernode:
+        if tmpNode.state != node.fathernode.state:
             tmpQ.append(tmpNode)
-            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode.state)
         del tmpNode
 
     if (i - 1 >= 0 and labyrinth[i - 1][j] != "X"):
-        tmpNode = Nodes([i - 1, j], node.state, node.cost, node.depth, labyrinth[i - 1][j])  # moved "up"
+        tmpNode = Nodes([i - 1, j], node, node.cost, node.depth, labyrinth[i - 1][j])  # moved "up"
         tmpNode.depth += 1
         tmpNode.cost += 1
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
 
-        if tmpNode.state != node.fathernode:
+        if tmpNode.state != node.fathernode.state:
             tmpQ.append(tmpNode)
-            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode.state)
         del tmpNode
+
 
     if (j - 1 >= 0 and labyrinth[i][j - 1] != "X"):
-        tmpNode = Nodes([i, j - 1], node.state, node.cost, node.depth, labyrinth[i][j - 1])  # moved "left"
+        tmpNode = Nodes([i, j - 1], node, node.cost, node.depth, labyrinth[i][j - 1])  # moved "left"
         tmpNode.depth += 1
         tmpNode.cost += 1
         if (tmpNode.value == 'D'):
             tmpNode.cost += 1
 
-        if tmpNode.state != node.fathernode:
+        if tmpNode.state != node.fathernode.state:
             tmpQ.append(tmpNode)
-            # print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost,"granfathernode:",node.fathernode.state)
         del tmpNode
+
 
     totalnodes += len(tmpQ)
     return tmpQ
@@ -70,7 +73,9 @@ def makeQueue(node, queue):
 
 [labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth.txt")
 previouslyvisited = []
-startNode = Nodes([0, 0], [-1, -1], 0, 0, "S")
+t=Nodes(-1,[-1,-1],-1,-1,"null")
+startNode = Nodes([0, 0], t, 0, 0, "S")
+startNode.fathernode.state=[-1,-1]
 queue = makeQueue(startNode, [])
 quepos = 1
 tmpNode = queue[0]
@@ -105,15 +110,17 @@ print("Total nodes created", repeats)  # Οι κομβοι που δημιουρ
 print("total nodes expanded:", totalnodes)
 
 bcNode = tmpNode
+print(bcNode.value)
 path = ''
 # Εκμεταλευεται το fathernode
 while (bcNode.value != 'S'):
     path = path + str(bcNode.state) + ' -> '
     # Κάθε επανάληψη ψάχνουμε ποιος κομβός εχει την κατάσταση
     # fathernode απο τον τορινο
-    for i in previouslyvisited:
-        if i.state == bcNode.fathernode:
-            bcNode = i
-            # Αυτος που έχει την σωστή κατάσταση γίνεται ο επομενος τορινος
+    bcNode = bcNode.fathernode
+    # Αυτος που έχει την σωστή κατάσταση γίνεται ο επομενος τορινος
 path = path + str(bcNode.state)
 print(path)
+# Με εναν απλο ελεγχο και ευρεση ποιου κομβου εχει την κατάσταση
+# του πατερα, η λουπα του backtrace τρεχει για παντα (d^~60K έλεγοι)
+input("Enter a key to continue")
