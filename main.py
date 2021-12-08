@@ -66,7 +66,7 @@ def makeQueue(node, queue):
     return tmpQ
 
 
-[labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth.txt")
+[labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth_small.txt")
 previouslyvisited = []
 startNode = Nodes([0, 0], [-1, -1], 0, 0, "S")
 queue = makeQueue(startNode, [])
@@ -76,7 +76,7 @@ tmpNode = queue[0]
 
 
 repeats = 0  # prosorino, to ebales gia na exeis ligotera prints
-while (tmpNode.value != 'G' ):
+while (tmpNode.value != 'G'):
     # print("start while queue:")
     # printing.printQueueState(queue)
     makeQueue(tmpNode, queue)
@@ -98,11 +98,11 @@ while (tmpNode.value != 'G' ):
     repeats += 1
 
 print("Finished")
-print(repeats)
-print("Katastasi tis ypoloipis ouras")
-for i in queue:
-    print("State:", i.state, "Cost:", i.cost, "Depth", i.depth, "Value", i.value)
-
+print("Total nodes created", repeats) # Οι κομβοι που δημιουργιθηκαν ειναι οι επαναλήψεις του while
 print("Congratulations you found it!! State:", tmpNode.state)
 print("Cost:", tmpNode.cost)
-print("total nodes created:",totalnodes)
+print("total nodes expanded:", totalnodes)
+print("previusly:", printing.printQueueState(previouslyvisited))
+
+
+
