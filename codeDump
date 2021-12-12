@@ -1,0 +1,20 @@
+# Κώδικας που ελέγχει αν πάμε να εξερευνήσουμε κόμβο που έχουμε εξερευνήσει
+for i in previouslyvisited:
+  if i.state==tmpNode.state:
+     queue.pop(0)
+    tmpNode=queue[0]
+
+
+
+
+# Κληση και εκτύπωση του UCS
+[goalNode, previuslyVisited, repeats, totalnodes] = UCS.UCS()
+
+# Στο tmpNode βρησκεται η κατάσταση στόχου
+print("Finished, Goal State:")
+goalNode.printclass()
+print("Total nodes created", repeats)  # Οι κομβοι που δημιουργιθηκαν ειναι οι επαναλήψεις του while
+print("total nodes expanded:", totalnodes)
+
+print("Path:(from G to S)")
+print(backTracePath(goalNode))  # Εκτύπωση του μονοπατιού
