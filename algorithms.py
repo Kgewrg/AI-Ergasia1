@@ -123,8 +123,8 @@ def IDS():
 
             if tmpNode.state != node.fathernode.state:
                 tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
+                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                      node.state)
             del tmpNode
 
         if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X"):
@@ -136,8 +136,8 @@ def IDS():
 
             if tmpNode.state != node.fathernode.state:
                 tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
+                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                      node.state)
             del tmpNode
 
         if (i - 1 >= 0 and labyrinth[i - 1][j] != "X"):
@@ -149,8 +149,8 @@ def IDS():
 
             if tmpNode.state != node.fathernode.state:
                 tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
+                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                      node.state)
             del tmpNode
 
         if (j - 1 >= 0 and labyrinth[i][j - 1] != "X"):
@@ -162,33 +162,53 @@ def IDS():
 
             if tmpNode.state != node.fathernode.state:
                 tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
+                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                      node.state)
             del tmpNode
 
         totalnodes += len(tmpQ)
         expandCounter+=1
         return tmpQ
 
-    global totalnodes
+    global totalnodes, expandCounter
     [labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth_small.txt")
     previouslyvisited = []
     startNode = Nodes([0, 0],
                       Nodes([-1, -1], [-1, -1], -1, -1, "null"),  # Για fathernode εχουμε ενα ακομη πιο startnode
                       0, 0, "S")
-    queue = makeQueue(startNode)
-    totalnodes += 1
-    previouslyvisited.append(startNode)
-    # quepos = 1
-    tmpNode = queue[0]
-    repeats = 0  # prosorino, to ebales gia na exeis ligotera prints
-    while (tmpNode.value != 'G' and repeats<10):
-        previouslyvisited.append(queue.pop(0))  # αφαιρείται απο την ουρα ο κόμβος που αναπτήχθηκε ->
-        # (για καποιο λόγο στον IDS(UCS) πρέπει να μπει πριν προσθεθούν τα παιδιά)
-        queue = makeQueue(tmpNode) + queue  # τα νέα παιδιά μπαινουν στην αρχή της ουρας
+    # Base DFS:
+    # tmpNode = startNode
+    # repeats = 0  # prosorino, to ebales gia na exeis ligotera prints
+    # while (tmpNode.value != 'G' and repeats<10):
+    #     queue = makeQueue(tmpNode) + queue  # τα νέα παιδιά μπαινουν στην αρχή της ουρας
+    #     tmpNode = queue[0]
+    #     previouslyvisited.append(queue.pop(0))
+    #     repeats += 1
+    """ Κάτι παιχτηκε εδώ, δεν ξέρω με τι λογική το έκανα, αλλά νομίζω δουλεύει, βάλε μικρό οριο repeats στο πρωτο 
+        while, και δες πραγματικά αν ειναι IDS, αλλά κατι πολύ λάθος πάει με την previusly και τα total nodes"""
+    # ΠΟΛΥ ΣΗΜΑΝΤΙΚΟ: queue=makequeue()+queue
+    repeats = 0
+    depthLimit = 1
+    tmpNode = startNode
+    while(tmpNode.value != 'G'):
+        previouslyvisited = []
+        queue = []
+        tmpNode = startNode
+        while(1):
+            queue = makeQueue(tmpNode) + queue
+            if (tmpNode.depth >= depthLimit):
+                print("popped:", queue.pop(0).state)
+                if (len(queue) == 0):
+                    break
+            if (len(queue) == 0 or tmpNode.value == 'G'):
+                break
+            tmpNode = queue[0]
+            previouslyvisited.append(queue.pop(0))
 
-        tmpNode = queue[0]  # -> Και μπαίνει να αναπτήξει τον επόμενο
-        # quepos += 1
+        print("depthlimit:", depthLimit, "len of queue:", len(queue))
+        expandCounter = 0
+        totalnodes = 0
+        depthLimit += 1
         repeats += 1
 
     goalNode = tmpNode
