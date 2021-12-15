@@ -1,81 +1,83 @@
 import parseLabyrinthBasic
 from nodes import Nodes
 
+
 totalnodes = 0
-expandCounter=1
+expandCounter = 1
+global labyrinth, totalLines, totalColumns
 
-
-def UCS():
-    def makeQueue(node):
-        """
-        Βρισκει τι διαθέσιμες κινήσεις μπορουμε να κάνουμε απο την κατάσταση του node και τις βάζει στην ουρα,
-        επίσης χρησιμοποιείται και για επέκταση (all-in-one).
-        :param node: nodes, Κόμβος που θα επεκταθεί
-        :param tmpQueue: πίνακας, Ουρά οπου θα αποθυκευτούν οι νέοι κομβοι
-        """
-        global totalnodes
-        tmpQ = []
-        i = node.state[0]
-        j = node.state[1]
-        print("expanding node:", node.state, "to")
-
-        if (i + 1 < totalLines and labyrinth[i + 1][j] != "X"):
-            tmpNode = Nodes([i + 1, j], node, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
-            del tmpNode
-
-        if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X"):
-            tmpNode = Nodes([i, j + 1], node, node.cost, node.depth, labyrinth[i][j + 1])  # moved "right"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
-            del tmpNode
-
-        if (i - 1 >= 0 and labyrinth[i - 1][j] != "X"):
-            tmpNode = Nodes([i - 1, j], node, node.cost, node.depth, labyrinth[i - 1][j])  # moved "up"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
-            del tmpNode
-
-        if (j - 1 >= 0 and labyrinth[i][j - 1] != "X"):
-            tmpNode = Nodes([i, j - 1], node, node.cost, node.depth, labyrinth[i][j - 1])  # moved "left"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "granfathernode:",
-                      node.fathernode.state)
-            del tmpNode
-
-        totalnodes += len(tmpQ)
-        return tmpQ
-
+def makeQueue(node):
+    """
+    Βρισκει τι διαθέσιμες κινήσεις μπορουμε να κάνουμε απο την κατάσταση του node και τις βάζει στην ουρα,
+    επίσης χρησιμοποιείται και για επέκταση (all-in-one).
+    :param node: nodes, Κόμβος που θα επεκταθεί
+    :param tmpQueue: πίνακας, Ουρά οπου θα αποθυκευτούν οι νέοι κομβοι
+    """
     global totalnodes
-    [labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth_small.txt")
+    tmpQ = []
+    i = node.state[0]
+    j = node.state[1]
+    print("expanding node:", node.state, "to")
+
+    if (i + 1 < totalLines and labyrinth[i + 1][j] != "X"):
+        tmpNode = Nodes([i + 1, j], node, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
+        tmpNode.depth += 1
+        tmpNode.cost += 1
+        if (tmpNode.value == 'D'):
+            tmpNode.cost += 1
+
+        if tmpNode.state != node.fathernode.state:
+            tmpQ.append(tmpNode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                  node.state)
+        del tmpNode
+
+    if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X"):
+        tmpNode = Nodes([i, j + 1], node, node.cost, node.depth, labyrinth[i][j + 1])  # moved "right"
+        tmpNode.depth += 1
+        tmpNode.cost += 1
+        if (tmpNode.value == 'D'):
+            tmpNode.cost += 1
+
+        if tmpNode.state != node.fathernode.state:
+            tmpQ.append(tmpNode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                  node.state)
+        del tmpNode
+
+    if (i - 1 >= 0 and labyrinth[i - 1][j] != "X"):
+        tmpNode = Nodes([i - 1, j], node, node.cost, node.depth, labyrinth[i - 1][j])  # moved "up"
+        tmpNode.depth += 1
+        tmpNode.cost += 1
+        if (tmpNode.value == 'D'):
+            tmpNode.cost += 1
+
+        if tmpNode.state != node.fathernode.state:
+            tmpQ.append(tmpNode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                  node.state)
+        del tmpNode
+
+    if (j - 1 >= 0 and labyrinth[i][j - 1] != "X"):
+        tmpNode = Nodes([i, j - 1], node, node.cost, node.depth, labyrinth[i][j - 1])  # moved "left"
+        tmpNode.depth += 1
+        tmpNode.cost += 1
+        if (tmpNode.value == 'D'):
+            tmpNode.cost += 1
+
+        if tmpNode.state != node.fathernode.state:
+            tmpQ.append(tmpNode)
+            print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
+                  node.state)
+        del tmpNode
+
+    totalnodes += len(tmpQ)
+    return tmpQ
+
+
+def UCS(labyrinthName):
+    global totalnodes, labyrinth, totalLines, totalColumns
+    [labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth(labyrinthName)
     previouslyvisited = []
     startNode = Nodes([0, 0],
                       Nodes([-1, -1], [-1, -1], -1, -1, "null"),  # Για fathernode εχουμε ενα ακομη πιο startnode
@@ -100,78 +102,9 @@ def UCS():
     return goalNode, previouslyvisited, repeats, totalnodes
 
 
-def IDS():
-    def makeQueue(node):
-        """
-        Βρισκει τι διαθέσιμες κινήσεις μπορουμε να κάνουμε απο την κατάσταση του node και τις βάζει στην ουρα,
-        επίσης χρησιμοποιείται και για επέκταση (all-in-one).
-        :param node: nodes, Κόμβος που θα επεκταθεί
-        :param queue: πίνακας, Ουρά οπου θα αποθυκευτούν οι νέοι κομβοι
-        """
-        global totalnodes, expandCounter
-        tmpQ = []
-        i = node.state[0]
-        j = node.state[1]
-        print(expandCounter,"expanding node:", node.state, "to")
-
-        if (i + 1 < totalLines and labyrinth[i + 1][j] != "X"):
-            tmpNode = Nodes([i + 1, j], node, node.cost, node.depth, labyrinth[i + 1][j])  # moved "down"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
-                      node.state)
-            del tmpNode
-
-        if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X"):
-            tmpNode = Nodes([i, j + 1], node, node.cost, node.depth, labyrinth[i][j + 1])  # moved "right"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
-                      node.state)
-            del tmpNode
-
-        if (i - 1 >= 0 and labyrinth[i - 1][j] != "X"):
-            tmpNode = Nodes([i - 1, j], node, node.cost, node.depth, labyrinth[i - 1][j])  # moved "up"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
-                      node.state)
-            del tmpNode
-
-        if (j - 1 >= 0 and labyrinth[i][j - 1] != "X"):
-            tmpNode = Nodes([i, j - 1], node, node.cost, node.depth, labyrinth[i][j - 1])  # moved "left"
-            tmpNode.depth += 1
-            tmpNode.cost += 1
-            if (tmpNode.value == 'D'):
-                tmpNode.cost += 1
-
-            if tmpNode.state != node.fathernode.state:
-                tmpQ.append(tmpNode)
-                print("tmpNode that was appended:", tmpNode.state, "and cost:", tmpNode.cost, "fathernode:",
-                      node.state)
-            del tmpNode
-
-        totalnodes += len(tmpQ)
-        expandCounter+=1
-        return tmpQ
-
-    global totalnodes, expandCounter
-    [labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth("labyrinth_small.txt")
+def IDS(labyrinthName):
+    global totalnodes, expandCounter, labyrinth, totalLines, totalColumns
+    [labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth(labyrinthName)
     previouslyvisited = []
     startNode = Nodes([0, 0],
                       Nodes([-1, -1], [-1, -1], -1, -1, "null"),  # Για fathernode εχουμε ενα ακομη πιο startnode
@@ -185,29 +118,32 @@ def IDS():
     #     previouslyvisited.append(queue.pop(0))
     #     repeats += 1
     """ Κάτι παιχτηκε εδώ, δεν ξέρω με τι λογική το έκανα, αλλά νομίζω δουλεύει, βάλε μικρό οριο repeats στο πρωτο 
-        while, και δες πραγματικά αν ειναι IDS, αλλά κατι πολύ λάθος πάει με την previusly και τα total nodes"""
+        while, και δες πραγματικά αν ειναι IDS, αλλά κατι πολύ λάθος πάει με την previusly και τα total nodes
+        
+        Το repeats ειναι λάθος εδώ μιας και μετράει την εξωτερική λούπα, ενώ η επέκταση γίνεται στην εσωτερική """
     # ΠΟΛΥ ΣΗΜΑΝΤΙΚΟ: queue=makequeue()+queue
     repeats = 0
     depthLimit = 1
-    tmpNode = startNode
+    tmpNode = startNode  # μια φορά εδω μόνο και μόνο για το εξωτερικό while
     while(tmpNode.value != 'G'):
-        previouslyvisited = []
+        previouslyvisited = []  # αρχικοποίηση καθέ φορα που αυξάνεται το όριο
         queue = []
-        tmpNode = startNode
-        while(1):
-            queue = makeQueue(tmpNode) + queue
-            if (tmpNode.depth >= depthLimit):
-                print("popped:", queue.pop(0).state)
-                if (len(queue) == 0):
-                    break
-            if (len(queue) == 0 or tmpNode.value == 'G'):
-                break
-            tmpNode = queue[0]
-            previouslyvisited.append(queue.pop(0))
-
-        print("depthlimit:", depthLimit, "len of queue:", len(queue))
-        expandCounter = 0
+        expandCounter = 1
         totalnodes = 0
+        tmpNode = startNode
+        while(1):  # Το while αυτό τρέχει μεχρι να αδειασει η queue ή βρουμε το G
+            queue = makeQueue(tmpNode) + queue  # Επεκτήνω
+            if (tmpNode.depth >= depthLimit):
+                #queue.pop(0)
+                print("popped:", queue.pop(0).state)  # Αν ο επόμενος κόμβος που παει να επιλεχθεί ειναι στο οριο
+                # βαθους, τον βγάζουμε απο την ουρά
+                if (len(queue) == 0): # redundant (δεν χρειάζεται, γινεται μετά ο ελεγχος)
+                    break  # αν η ουρά αδειάσει, τότε βγαίνουμε απο την εσωτερική λουπα
+            if (len(queue) == 0 or tmpNode.value == 'G'):
+                break # επίσης βγαινουμε αν είμαστε στον G
+            tmpNode = queue[0]  # μετά τα if, επιλέγετε κόμβος που δεν ειναι στο όριο
+            previouslyvisited.append(queue.pop(0))  # προσθέτουμε τον κομβο που πήραμε να επεκτίνουμε στην previously
+
         depthLimit += 1
         repeats += 1
 

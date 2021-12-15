@@ -1,8 +1,5 @@
 import algorithms
 
-totalnodes = 0
-
-
 def backTracePath(currentNode):
     """
     backTracePath
@@ -24,7 +21,7 @@ def backTracePath(currentNode):
 
 
 def main():
-    [goalNode, previuslyVisited, repeats, totalnodes] = algorithms.IDS()
+    [goalNode, previuslyVisited, repeats, totalnodes] = algorithms.IDS("labyrinth.txt")
 
     # Στο tmpNode βρησκεται η κατάσταση στόχου
     print("Finished, Goal State:")
@@ -32,9 +29,12 @@ def main():
     print("length of previusly:", len(previuslyVisited))
     print("Total nodes created", repeats)  # Οι κομβοι που δημιουργιθηκαν ειναι οι επαναλήψεις του while
     print("total nodes expanded:", totalnodes)
+    # Γενικώς εχω βάλει λάθος τα repeats με τα created, και το expaned με το totalnodes
+    #
 
     print("Path:(from G to S)")
     print(backTracePath(goalNode))  # Εκτύπωση του μονοπατιού
+    input("Enter a key to continiue")
 
 
 if (__name__ == '__main__'):
