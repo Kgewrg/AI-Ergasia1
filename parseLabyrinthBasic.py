@@ -48,5 +48,5 @@ def buetyPrint(labyrinth):
     totalCols = len(labyrinth[0])
     for i in range(totalLines):
         for j in range(totalCols):
-            print(labyrinth[i][j], end='')
+            print(labyrinth[i][j], '|' ,end='')
         print('\n', end='')

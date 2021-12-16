@@ -1,5 +1,6 @@
 import parseLabyrinthBasic
 from nodes import Nodes
+import math
 
 
 totalnodes = 0
@@ -149,3 +150,41 @@ def IDS(labyrinthName):
 
     goalNode = tmpNode
     return goalNode, previouslyvisited, repeats, totalnodes
+
+
+def A_star(labyrinthName):
+    global labyrinth, totalLines, totalColumns
+    [labyrinth, totalLines, totalColumns] = parseLabyrinthBasic.parseLabyrinth(labyrinthName)
+
+
+    def heuristic():
+        # Δημηουργία 2D πίνακα με -1 για default τιμες
+        heursticValues = [[int(-1) for i in range(totalColumns)] for i in range(totalLines)]
+        # Εύρεση της θέσης του G
+        gx = -1
+        gy = -1
+        for i in range(totalLines):
+            for j in range(totalColumns):
+
+                if (labyrinth[i][j] != 'G'):
+                    continue
+                else:
+                    gx=i
+                    gy=j
+
+        # Υπολογισμός απόστασης απο κάθε σημείο εως το σημείο G
+        for i in range(totalLines):
+            for j in range(totalColumns):
+                if (labyrinth[i][j] != 'X'):
+                    xDist = (gx-i)**2
+                    yDist = (gy-j)**2
+                    heursticValues[i][j] = int(math.sqrt(xDist + yDist))
+                    #print("x=", i, "xDist=", xDist, "y=", j, "yDist=", yDist, "dist=", heursticValues[i][j])
+
+        # Στο τέλος η heuristic τιμή είναι αποθυκευμένη σε εναν πινακα ίδιου μεγέθους με του χαρτη
+        # και μπορει να αξιοποιηθεί ως
+        # (tmpNode)cost=node.cost+heuristicValues[tmpNode.state[0]][tmpNode.state[1]]
+        parseLabyrinthBasic.buetyPrint(heursticValues)
+
+
+    heuristic()
