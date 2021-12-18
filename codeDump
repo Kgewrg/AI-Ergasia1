@@ -6,7 +6,6 @@ for i in previouslyvisited:
 
 
 
-
 # Κληση και εκτύπωση του UCS
 [goalNode, previuslyVisited, repeats, totalnodes] = UCS.UCS()
 

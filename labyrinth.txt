@@ -1,6 +1,6 @@
 S X    XX X X
    DX     D X
-X X    XX X X
+  X    XX X X
   DX DX  D   
 XX  X   XXXX 
  D X X  XX   
@@ -8,4 +8,4 @@ X DX XXD  DXD
  X  D   X    
   D  XX XXXX 
 XX    X     D
-XX XX  DXXX G
+  XX  DXX X G
