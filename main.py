@@ -271,7 +271,7 @@ def Astar(queue):
     print("Done, goal node data:")
     tmpNode.printclass()
     print("Total nodes created:", counter)
-    print("Total nodes expanded:", repeats)
+    print("Total nodes expanded:(in the last search)", repeats)
     print("Path to the GoalNode:", backTracePath(tmpNode))
 
 
