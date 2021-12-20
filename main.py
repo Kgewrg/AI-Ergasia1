@@ -6,7 +6,9 @@
     1481 Καραγκιώτης Αθανάσιος 
     ta sxolia kai merika prints einai sta ellinika 
     Υλποιήθηκε σε Python 3.9 - 3.10"""
+import printing
 from nodes import Nodes
+import random
 
 # global τιμές
 counter = 0
@@ -14,6 +16,28 @@ heuristicTable = []
 labyrinth = []
 totalLines = 0
 totalColumns = 0
+
+def sameValueMoves(queue):
+    cost=queue[0].cost
+    sameCostCounter=0
+    i=0
+    while(queue[i].cost==cost):
+        print("states with the same cost:",queue[i].state)
+        sameCostCounter+=1
+        i+=1
+
+    print(sameCostCounter)
+
+
+
+    randomChoice=random.randrange(0,sameCostCounter)
+    print("randomly choosed:",randomChoice)
+    printing.printQueueState(queue)
+    queue[0],queue[randomChoice]=queue[randomChoice],queue[0]
+    printing.printQueueState(queue)
+    return queue
+
+
 
 
 def heuristic():
@@ -237,6 +261,7 @@ def ids(queue):
                 repeats = 1
                 break  # Βγαινουμε απο την εσωτερική while
 
+
             tmpNode = queue[0]
             # Εφόσων δεν έχει αδείαση η ουρά, επιλέγουμε για επέκταση τον επόμενο κόμβο στην ουρα
             previouslyVisited.append(queue.pop(0))
@@ -270,6 +295,7 @@ def Astar(queue):
         previouslyvisited.append(queue.pop(0))
         queue = sorted(queue, key=lambda Nodes: Nodes.Hvalue)
         # Η μόνη αλλαγή που κάνουμε για τον Astart είναι να ταξινομούμε κατα την heuristic τιμή
+        #queue = sameValueMoves(queue)
         tmpNode = queue[0]
         repeats += 1
     # Στο τέλος του while, το tmpNode είναι ο κόμβος στόχου
@@ -332,13 +358,13 @@ def main():
                       0, 0, "S", -1)  # Είχε 15 στο hvalue ο παλ
     queue.append(startNode)
 
-    print()  # Κενή γραμμή
-    print("Running UCS")
-    ucs(queue)
-    counter = 0
-    queue = []
-    queue.append(startNode)
-    # Αρχικοίηση των τιμών μετά απο κάθε εκτέλεση των αλγωρίθμων
+    # print()  # Κενή γραμμή
+    # print("Running UCS")
+    # ucs(queue)
+    # counter = 0
+    # queue = []
+    # queue.append(startNode)
+    # # Αρχικοίηση των τιμών μετά απο κάθε εκτέλεση των αλγωρίθμων
 
     print("Running A*")
     Astar(queue)
@@ -346,9 +372,9 @@ def main():
     queue = []
     queue.append(startNode)
 
-    print()
-    print("Running IDS")
-    ids(queue)
+    # print()
+    # print("Running IDS")
+    # ids(queue)
 
 
 if (__name__ == '__main__'):
