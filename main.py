@@ -1,4 +1,11 @@
-""" Main Αρχείο """
+""" Main Αρχείο 
+    Εργασία 1 από τους:
+    1451 Γεωργίτσαρος Κωνστατνίνος
+    1530 Κωνσταντινος Παλεγκας 
+    1495 Χαρίσης Κύρινας 
+    1481 Καραγκιώτης Αθανάσιος 
+    ta sxolia kai merika prints einai sta ellinika 
+    Υλποιήθηκε σε Python 3.9 - 3.10"""
 from nodes import Nodes
 
 # global τιμές
@@ -50,16 +57,16 @@ def heuristic():
 
 
 def makeQueue(node):
-    """Συνάρτηση για να βρίσκουμε και να επιστρέφουμε τα παιδιά ενός κόμβου
+    """ Συνάρτηση που βρίσκει τις διαθέσιμες ενέργειες και τις επεκτήνει
     :param: node: αντικείμενο τύπου nodes, κομβος τον οποίο θα επεκτείνει
 
-    :returns: πίανας με τα παιδία του κόμβου που πήρε σαν είσωδο"""
+    :returns: πίανας με τα παιδία του κόμβου που πήρε σαν είσωδο """
     tmpQ = []  # Εδώ θα αποθυκευτούν τα παιδία του κόμβου που θα επεκταθεί
     i = node.state[0]
     j = node.state[1]
     # print("i=", i, "j=", j)
 
-    # Για κάθε κατεύθηνση έχουμε και ξεχωριστό if
+    # Για κάθε κατεύθηνση (ενέργεια) έχουμε και ξεχωριστό if
     if (i + 1 < totalLines and labyrinth[i + 1][j] != "X" and node.fathernode.state != [i + 1, j]):
         # Στο οποίο μπορούμε να μπούμε μέσα μόνο αν η ενέργεια (μετακίνηση) που πάμε να κάνουμε δεν είναι:
         #   Εκτώς ορίων του πίνακα (i + 1 < totalLines)
@@ -245,7 +252,7 @@ def ids(queue):
     print("Done, goal node data:")
     tmpNode.printclass()
     print("Total nodes created:", counter, "and to max depth:", maxdepth)
-    print("Total nodes expanded:", repeats)
+    print("Total nodes expanded:(in the last search)", repeats)
     print("Path to the GoalNode:", backTracePath(tmpNode))
 
 
@@ -271,17 +278,16 @@ def Astar(queue):
     print("Done, goal node data:")
     tmpNode.printclass()
     print("Total nodes created:", counter)
-    print("Total nodes expanded:(in the last search)", repeats)
+    print("Total nodes expanded:", repeats)
     print("Path to the GoalNode:", backTracePath(tmpNode))
 
 
 def main():
     """Main"""
-    # (Parsing) Ανάγνωση του αρχείου με τον λαβύρινθο
+
     global totalColumns, totalLines, labyrinth, counter
-
-    file1 = open('labyrinth.txt', 'r')
-
+    # (Parsing) Ανάγνωση του αρχείου με τον λαβύρινθο
+    file1 = open('labyrinth.txt', 'r') # πρέπει να είναι στον ίδιο φάκελο με το αρχείο main.py
     # Δίαβασμα του αρχείου
     lst = []
     for i in file1:
@@ -299,11 +305,16 @@ def main():
     # Και για να δούμε πόσες στήλες έχει ο πίνακας,
     # βλέπουμε το μήκος κάποιου υπο-πίνακα
 
+    # ένα πρόβλημα που μπορεί να υπάρξει εδώ είναι τα κενά μετα απο κάποιο χαρακτήρα
+    # πχ:(γραμμή 4)[  DX DX  D   ] κάποιοι text editors, δεν θα κρατήσουν τα κενά μετα το D
+    # το notepad όμως τα κρατάει
+
     # Εκτύπωση του τελικού πίνακα
     print("Ο λαβύρινθος σε μορφή πίνακα")
     for i in labyrinth:
         print(i)
         # Εκτυπώνουμε τον κάθε υπο-πίνακα ξεχωριστά
+
 
     # Υπολογισμός των heuristic τιμών
     heuristic()
@@ -327,15 +338,13 @@ def main():
     counter = 0
     queue = []
     queue.append(startNode)
+    # Αρχικοίηση των τιμών μετά απο κάθε εκτέλεση των αλγωρίθμων
 
     print("Running A*")
     Astar(queue)
     counter = 0
     queue = []
     queue.append(startNode)
-    # Αρχικοίηση των τιμών μετά απο κάθε εκτέλεση των αλγωρίθμων
-
-
 
     print()
     print("Running IDS")
