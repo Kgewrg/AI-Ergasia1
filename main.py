@@ -18,23 +18,23 @@ totalLines = 0
 totalColumns = 0
 
 def sameValueMoves(queue):
-    cost=queue[0].cost
-    sameCostCounter=0
-    i=0
-    while(queue[i].cost==cost):
-        print("states with the same cost:",queue[i].state)
-        sameCostCounter+=1
-        i+=1
+    cost = queue[0].cost
+    sameCostCounter = 0
+    i = 0
+    print("selected cost:", cost)
+    while(queue[i].cost == cost and len(queue)-1 > i):
+        sameCostCounter += 1
+        i += 1
 
-    print(sameCostCounter)
-
-
-
-    randomChoice=random.randrange(0,sameCostCounter)
-    print("randomly choosed:",randomChoice)
-    printing.printQueueState(queue)
-    queue[0],queue[randomChoice]=queue[randomChoice],queue[0]
-    printing.printQueueState(queue)
+    print("states with same cost counter", sameCostCounter)
+    if(sameCostCounter > 0):
+        randomChoice = random.randrange(0, sameCostCounter)
+        print("randomly choosed:", randomChoice)
+        print("before switching")
+        printing.printQueueState(queue)
+        printing.printQueueCost(queue)
+        queue[0], queue[randomChoice] = queue[randomChoice], queue[0]
+        printing.printQueueState(queue)
     return queue
 
 
@@ -295,7 +295,8 @@ def Astar(queue):
         previouslyvisited.append(queue.pop(0))
         queue = sorted(queue, key=lambda Nodes: Nodes.Hvalue)
         # Η μόνη αλλαγή που κάνουμε για τον Astart είναι να ταξινομούμε κατα την heuristic τιμή
-        #queue = sameValueMoves(queue)
+        printing.printQueueCost(queue)
+        queue = sameValueMoves(queue)
         tmpNode = queue[0]
         repeats += 1
     # Στο τέλος του while, το tmpNode είναι ο κόμβος στόχου
