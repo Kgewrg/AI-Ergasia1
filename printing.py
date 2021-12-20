@@ -10,3 +10,9 @@ def printQueueCost(queue):
     for i in queue:
         print(str(i.cost)+",", end='')
     print('\n')
+
+def printQueueHvalue(queue):
+    print("Size of queue: ", len(queue))
+    for i in queue:
+        print(str(i.Hvalue)+",", end='')
+    print('\n')

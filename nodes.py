@@ -13,7 +13,7 @@ class Nodes:
         self.cost = cost
         self.depth = depth
         self.value = value
-        self.Hvalue= Hvalue
+        self.Hvalue = Hvalue
 
     def printclass(self):
         print("State:", self.state,

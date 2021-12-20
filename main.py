@@ -17,24 +17,49 @@ labyrinth = []
 totalLines = 0
 totalColumns = 0
 
-def sameValueMoves(queue):
-    cost = queue[0].cost
-    sameCostCounter = 0
-    i = 0
-    print("selected cost:", cost)
-    while(queue[i].cost == cost and len(queue)-1 > i):
-        sameCostCounter += 1
-        i += 1
 
-    print("states with same cost counter", sameCostCounter)
-    if(sameCostCounter > 0):
-        randomChoice = random.randrange(0, sameCostCounter)
-        print("randomly choosed:", randomChoice)
-        print("before switching")
-        printing.printQueueState(queue)
-        printing.printQueueCost(queue)
-        queue[0], queue[randomChoice] = queue[randomChoice], queue[0]
-        printing.printQueueState(queue)
+def sameValueMoves(queue, value):
+    """
+    Βρήσκει πόσα στοιχεία στην ουρά εχουν το ίδιο κόστος, επιλέχει ένα τυχαίο απο τα ίδιου κόστους,
+    και το αλλάζει θέση με τον πρώτο της ουράς.
+    :param queue: (πίνακας) Η ουρά οπου στην οποία θα γίνει η επιλογή (ταξινομημένη απο μικρότερο προς το μεγαλύτερο)
+    :param value: (string) cost/hvalue με βάση ποια τιμή κόστους θα γίνει ο έλεγχος
+    :return: (πίνακας) την ουρά που ήρθε σας είσοδος αλλά σαν πρώτο στοιχείο το τυχαία επιλεγμένο
+    """
+
+    # Δύο ξεχωριστά if για κάθε τιμή
+    if value == "cost":
+        # Σαν κόστος με το οποίο θα γίνεται η σύγκριση παίρνουμε το κόστος του πρώτου στοιχείου
+        cost = queue[0].cost
+
+        sameCostCounter = 0  # πλήθος κόμβων με το ίδιο κόστος
+        i = 0
+        while(queue[i].cost == cost and len(queue)-1 > i):
+            # Το while αυτό μετράει πόσοι κόμβοι έχουν το ίδιο κόστος και σταματάει με το που βρεί κάποιον κόμβο με
+            # διαφορετικό κόστος
+            sameCostCounter += 1
+            i += 1
+
+        # κάνουμε την αλλαγή θέσεων αν υπάρχουν παράνω απο 1 κόμβοι με το ίδιο κόστος
+        if(sameCostCounter > 1):
+            randomChoice = random.randrange(0, sameCostCounter)
+            # η randrange(0,sameCostCounter) θα επιστρέψει μια Int τιμή απο το 0 μέχρι το πλήθος των κόμβων με το
+            # ίδιο κόστος
+            queue[0], queue[randomChoice] = queue[randomChoice], queue[0]
+            # Αλλαγή θέσεων
+
+
+    elif value == "hvalue":
+        cost = queue[0].Hvalue
+        sameCostCounter = 0
+        i = 1
+        while (queue[i].Hvalue == cost and len(queue) - 1 > i):
+            sameCostCounter += 1
+            i += 1
+
+        if (sameCostCounter > 0):
+            randomChoice = random.randrange(0, sameCostCounter)
+            queue[0], queue[randomChoice] = queue[randomChoice], queue[0]
     return queue
 
 
@@ -295,8 +320,7 @@ def Astar(queue):
         previouslyvisited.append(queue.pop(0))
         queue = sorted(queue, key=lambda Nodes: Nodes.Hvalue)
         # Η μόνη αλλαγή που κάνουμε για τον Astart είναι να ταξινομούμε κατα την heuristic τιμή
-        printing.printQueueCost(queue)
-        queue = sameValueMoves(queue)
+        queue = sameValueMoves(queue, "hvalue")
         tmpNode = queue[0]
         repeats += 1
     # Στο τέλος του while, το tmpNode είναι ο κόμβος στόχου

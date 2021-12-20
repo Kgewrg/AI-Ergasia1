@@ -17,3 +17,48 @@ print("total nodes expanded:", totalnodes)
 
 print("Path:(from G to S)")
 print(backTracePath(goalNode))  # Εκτύπωση του μονοπατιού
+
+
+
+
+SameCostValues με printing
+def sameValueMoves(queue, value):
+    if value == "cost":
+        cost = queue[0].cost
+        sameCostCounter = 0
+        i = 0
+        print("selected cost:", cost)
+        while(queue[i].cost == cost and len(queue)-1 > i):
+            sameCostCounter += 1
+            i += 1
+
+        print("states with same cost counter", sameCostCounter)
+        if(sameCostCounter > 1):
+            randomChoice = random.randrange(0, sameCostCounter)
+            print("randomly choosed:", randomChoice)
+            print("before switching")
+            printing.printQueueState(queue)
+            printing.printQueueCost(queue)
+            queue[0], queue[randomChoice] = queue[randomChoice], queue[0]
+            printing.printQueueState(queue)
+
+    elif value == "hvalue":
+        cost = queue[0].Hvalue
+        sameCostCounter = 0
+        i = 0
+        print("selected cost:", cost)
+        while (queue[i].Hvalue == cost and len(queue) - 1 > i):
+            sameCostCounter += 1
+            i += 1
+
+        print("states with same cost counter", sameCostCounter)
+        if (sameCostCounter > 1):
+            randomChoice = random.randrange(0, sameCostCounter)
+            print("randomly choosed:", randomChoice)
+            print("before switching")
+            printing.printQueueState(queue)
+            printing.printQueueHvalue(queue)
+            queue[0], queue[randomChoice] = queue[randomChoice], queue[0]
+            print("After switching")
+            printing.printQueueState(queue)
+    return queue
