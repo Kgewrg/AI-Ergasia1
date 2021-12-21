@@ -1,12 +1,11 @@
-""" Main Αρχείο 
+""" Main Αρχείο
     Εργασία 1 από τους:
     1451 Γεωργίτσαρος Κωνστατνίνος
-    1530 Κωνσταντινος Παλεγκας 
-    1495 Χαρίσης Κύρινας 
-    1481 Καραγκιώτης Αθανάσιος 
-    ta sxolia kai merika prints einai sta ellinika 
+    1530 Κωνσταντινος Παλεγκας
+    1495 Χαρίσης Κύρινας
+    1481 Καραγκιώτης Αθανάσιος
     Υλποιήθηκε σε Python 3.9 - 3.10"""
-import printing
+
 from nodes import Nodes
 import random
 
@@ -20,7 +19,7 @@ totalColumns = 0
 
 def sameValueMoves(queue, value):
     """
-    Βρήσκει πόσα στοιχεία στην ουρά εχουν το ίδιο κόστος, επιλέχει ένα τυχαίο απο τα ίδιου κόστους,
+    Βρίσκει πόσα στοιχεία στην ουρά εχουν το ίδιο κόστος, επιλέγει ένα τυχαίο απο τα ίδιου κόστους,
     και το αλλάζει θέση με τον πρώτο της ουράς.
     :param queue: (πίνακας) Η ουρά οπου στην οποία θα γίνει η επιλογή (ταξινομημένη απο μικρότερο προς το μεγαλύτερο)
     :param value: (string) cost/hvalue με βάση ποια τιμή κόστους θα γίνει ο έλεγχος
@@ -40,14 +39,13 @@ def sameValueMoves(queue, value):
             sameCostCounter += 1
             i += 1
 
-        # κάνουμε την αλλαγή θέσεων αν υπάρχουν παράνω απο 1 κόμβοι με το ίδιο κόστος
+        # κάνουμε την αλλαγή θέσεων αν υπάρχουν παραπάνω απο 1 κόμβοι με το ίδιο κόστος
         if(sameCostCounter > 1):
             randomChoice = random.randrange(0, sameCostCounter)
             # η randrange(0,sameCostCounter) θα επιστρέψει μια Int τιμή απο το 0 μέχρι το πλήθος των κόμβων με το
             # ίδιο κόστος
             queue[0], queue[randomChoice] = queue[randomChoice], queue[0]
             # Αλλαγή θέσεων
-
 
     elif value == "hvalue":
         cost = queue[0].Hvalue
@@ -63,23 +61,21 @@ def sameValueMoves(queue, value):
     return queue
 
 
-
-
 def heuristic():
     """
     Συνάρτηση να βρίσκει το heuristic σε μέγεθος του αρχικού πίνακα
     Αλλάζει global τιμές
     """
-    global heuristicTable, labyrinth, totalLines, totalColumns
-    # Για να ξέρει η συνάρτηση οτι η μεταβλητή Heurustic είναι global
+    global heuristicTable
+    # Για να ξέρει η συνάρτηση ότι η μεταβλητή Heurustic είναι global
     heuristicTable = [[] for i in range(totalLines)]
-    # Φτιάχνουμε εναν 2d πίνακα με totalLines συνολικές γραμμές
+    # Φτιάχνουμε έναν 2d πίνακα με totalLines συνολικές γραμμές
     # Οι γραμμές περιέχουν άδειους πίνακες
 
     for i in range(totalLines):
         for j in range(totalColumns):
             heuristicTable[i].append(0)
-            # Σε κάθε υπο-πίνακα προσάρτονται totalColums συνολικά μηδενικά
+            # Σε κάθε υπο-πίνακα προσάρτονται totalColumns συνολικά μηδενικά
     gi = -1
     gj = -1
     # gi, gj Θέση στον πίνακα που βρήσκεται το G
@@ -87,11 +83,9 @@ def heuristic():
         for j in range(totalColumns):
             if (labyrinth[i][j] != 'G'):
                 continue
-                # Αν σε αυτήν την θέση δεν ειναι το G, την προσπερνάμε
             else:
                 gi = i
                 gj = j
-                # Αλλίως αποθυκεύουμε την θέση (συντεταγμένες)
 
     # Υλοποίηση της απόσταστης Manhattan
     for i in range(totalLines):
@@ -102,14 +96,14 @@ def heuristic():
             # και πόσα οριζόντια
             heuristicTable[i][j] = dx + dy
             # Στο τέλος έχουμε έναν δελυτέρο πίνακα, ίδιων διαστάσεων με τον πίνακα του λαβύρινθου
-            # που περιέχει την απόσταση manhattan για κάθε κελί μέχρι το κελί του G
+            # που περιέχει την απόσταση manhattan για κάθε κελί
 
 
 def makeQueue(node):
     """ Συνάρτηση που βρίσκει τις διαθέσιμες ενέργειες και τις επεκτήνει
     :param: node: αντικείμενο τύπου nodes, κομβος τον οποίο θα επεκτείνει
 
-    :returns: πίανας με τα παιδία του κόμβου που πήρε σαν είσωδο """
+    :returns: πίανας<--πινακας με τα παιδία του κόμβου που πήρε σαν είσοδο"""
     tmpQ = []  # Εδώ θα αποθυκευτούν τα παιδία του κόμβου που θα επεκταθεί
     i = node.state[0]
     j = node.state[1]
@@ -118,9 +112,9 @@ def makeQueue(node):
     # Για κάθε κατεύθηνση (ενέργεια) έχουμε και ξεχωριστό if
     if (i + 1 < totalLines and labyrinth[i + 1][j] != "X" and node.fathernode.state != [i + 1, j]):
         # Στο οποίο μπορούμε να μπούμε μέσα μόνο αν η ενέργεια (μετακίνηση) που πάμε να κάνουμε δεν είναι:
-        #   Εκτώς ορίων του πίνακα (i + 1 < totalLines)
+        #   Εκτός ορίων του πίνακα (i + 1 < totalLines)
         #   Το κελί που θα πάμε δεν είναι αδιέξωδος (labyrinth[i + 1][j] != "X")
-        #   Και η ενέργεια που θα κάνουμε δεν είναι προς τα πίσω κίνηση, δεν μας στέλνει στον πατέρα του
+        #   Και η ενέργεια που θα κάνουμε δεν μας οδηγεί στον πατέρα κόμβο
         #       κόμβου που επεκτείνουμε
 
         # Δημιουργούμε ενα προσωρινό αντικείμενο (κόμβος)
@@ -128,7 +122,7 @@ def makeQueue(node):
         # του θέτουμε το κόστος και το βάθος
         tmpNode.depth += 1
         tmpNode.cost += 1
-        # Αρχικά το κοστος και το βάθος του προσωρινού κόμβου έχουν τις τιμές του κόμου-πατέρα
+        # Αρχικά το κοστος και το βάθος του προσωρινού κόμβου έχουν τις τιμές του κόμου-πατέρα<--κόμβου
         #   και αυξάνονται κατα 1
 
         # Αυξάνουμε το πλήθος των κόμβων που επεκτάθηκαν
@@ -136,7 +130,7 @@ def makeQueue(node):
 
         # Αν ο κόμβος που πάμε να επεκτείνουμε είναι πόρτα
         if (tmpNode.value == 'D'):
-            # ξανα αυξάνουμε το κόστος κατα 1 (συνολικά αυξάνεται κατα 2)
+            # ξανα αυξάνουμε ξανά το κόστος κατα 1 (συνολικά αυξάνεται κατα 2)
             tmpNode.cost += 1
 
         # Θέτουμε την heuristic τιμή για αυτόν τον κόμβο (χρησιμοποιείται μόνο στον Astar)
@@ -148,7 +142,7 @@ def makeQueue(node):
         # Διαγράφουμε τον προσωρινό κόμβο
         del tmpNode
 
-    # το μόνο που αλλάζει στα υπόλοιπα if είναι σε πια τιμή γίνεται η πράξη (i+1, j+1, κτλ)
+    # το μόνο που αλλάζει στα υπόλοιπα if είναι η θέση του πίνακα (i+1, j+1, κτλ)
     if (j + 1 < totalColumns and labyrinth[i][j + 1] != "X" and node.fathernode.state != [i, j + 1]):
         tmpNode = Nodes([i, j + 1], node, node.cost, node.depth, labyrinth[i][j + 1], 0)  # προς τα δεξιά
         tmpNode.depth += 1
@@ -186,21 +180,21 @@ def makeQueue(node):
     return tmpQ
 
 
-def backTracePath(currentNode):  #
+def backTracePath(currentNode):
     """
     backTracePath
-    Συνάρτηση για να βρίσκουμε το μονοπάτι απο τον κόμβο στόχου πρως την αρχή
-    :param currentNode: Ο τορινός κόμβος (κόμβος λύση)
+    Συνάρτηση για να βρίσκουμε το μονοπάτι απο τον κόμβο στόχου προς την αρχή
+    :param currentNode: ο τορινός κόμβος (κόμβος λύση)
     :return: ένα string με τις καταστάσεις που οδηγούν στην αρχή (μονοπάτι)
     """
     btNode = currentNode  # backTraceNode
     path = ''
-    # Εκμεταλευεται το fathernode, ξεκινάμε απο τον G και πάμε στον father του (προς τα πίσω κίνηση)
+    # Εκμεταλευεται το fathernode, ξεκινάμε απο τον G και πάμε στον πατέρα του (προς τα πίσω κίνηση)
     while (btNode.value != 'S'):
-        path = path + str(btNode.state) + ' -> '  # κρατάμε την κατάσταση στο string αυτο
+        path = path + str(btNode.state) + ' -> '  # κρατάμε την κατάσταση στο string
         btNode = btNode.fathernode
-        # fathernode απο τον τορινο
-        # ο επόμενος γίνεαι ο πατέρας του τορινού
+        # fathernode απο τον τωρινό
+        # ο επόμενος γίνεται ο πατέρας του τωρινού
     path = path + str(btNode.state)
     del btNode
     return path
@@ -209,8 +203,7 @@ def backTracePath(currentNode):  #
 def nodecounter():
     """
     Συνάρτηση για να μετράει τους συνολικούς κόμβους που δημιουργήθηκαν
-    Αλλάζει global τιμές
-    Κάθε φορά που καλείτε, αυξάνει το counter κατα 1
+    Κάθε φορά που καλείται, αυξάνει το counter κατα 1
     """
     global counter
     counter += 1
@@ -218,17 +211,16 @@ def nodecounter():
 
 def ucs(queue):
     """ Υλοποιήση του UCS, Επιλέγει τον κόμβο με το μικρότερο κόστος
-        :param: queue, Ουρα στην οποία θα επεκτείνει (global Πινακας),
+        :param: queue, Ουρά στην οποία θα επεκτείνει (global Πίνακας),
                 με πρώτο στοιχείο ο κόμβος απο τον οποίο θα ξεκινήσει η επέκταση"""
     previouslyVisited = []  # Σε αυτόν τον πίνακα κρατάμε τους κόμβους που επεκτείναμε
-    repeats = 1  # οι επαναληψεις που θα κάνει η while θα είναι και το πλήθος των κόμβων που επέκτεινε
-    tmpNode = queue[0]  # πέρνουμε το πρώτο στοιχείου της ουρας
-    #   οταν πρωτο-καλείτε είναι το start noteς
+    repeats = 1
+    tmpNode = queue[0]  # πέρνουμε το πρώτο στοιχείο της ουράς
+    #   οταν πρωτο-καλείτε είναι το start node
 
     while (tmpNode.value != 'G'):
-        # Εκτύπωση πέριπου κάθε 1000 επεκτάσεις, μονο στον UCS γιατι μόνο αυτος πέρνει αισθητή ώρα εκτέλεσης
-        #   περίπου γιατι σε κάθε makeQueue μπορεί να επεκταθούν απο 0 εώς και 4 κόμβοι
-        if (repeats % 1000 == 0):
+        # Εκτύπωση κάθε 1000 επεκτάσεις
+        if (repeats % 5000 == 0):
             print("Expanded", counter, "nodes and still searching, current node:")
             tmpNode.printclass()
         # Η while είναι αυτή που ελέγχει αν είμαστε σε κόμβο στόχου
@@ -237,14 +229,16 @@ def ucs(queue):
         previouslyVisited.append(queue.pop(0))
         # Αφαιρούμε απο την queue το στοιχείο που μόλις επεκτήναμε και ταυτόχρονα το βάζουμε στην previuslyVisited
         queue = sorted(queue, key=lambda Nodes: Nodes.cost)
-        # sort της queue με βάση το κοστος των κομβων
+        # sort της queue με βάση το κόστος των κόμβων
+
+        # τροποποίηση της queue για να επιλέγει τυχαία ισάξια ενέργεια
+        queue = sameValueMoves(queue, "cost")
         tmpNode = queue[0]
-        # ο επόμενος κόμβος που θα επεκταθεί είναι τωρα ο επόμενος στην σειρα (2ος πριν την αφαίρεση)
         repeats += 1
 
-    # Στο τέλος του while, το tmpNode είναι ο κόμβος στόχου, και η previuslyVisited είναι η ουρά
+    # Στο τέλος του while, το tmpNode είναι ο κόμβος στόχου, και η previuslyVisited είναι οι κόμβοι που ελέγχθηκαν
     previouslyVisited.append(tmpNode)
-    # Μια τελευταία πρόσθαιση στην previouslyVisited, για να μπεί και ο κόβος στόχου
+    # Μια τελευταία πρόσθεση στην previouslyVisited, για να μπεί ο κόμβος στόχου
 
     print("Done, goal node data:")
     tmpNode.printclass()
@@ -267,41 +261,44 @@ def ids(queue):
     repeats = 0
 
     while (tmpNode.value != 'G'):
-        # Αφαιρούμε τον κόμβο που πάει να επεκταθεί απο την ουρά
+        # Αφαιρούμε τον κόμβο που θα επεκταθεί απο την ουρά
         previouslyVisited.append(queue.pop(0))
-        # Ο κόμβος που πάει να επεκταθεί ειναι στην tmpNode, οπότε μπορούμε  να τον βγάλουμε απο την ουρα
+        # Ο κόμβος που θα επεκταθεί είναι στην tmpNode, οπότε μπορούμε να τον βγάλουμε απο την ουρα
         #   πριν "ολοκληρωθεί" η επέκταση
 
         # Επεκτίνουμε κανονικά με DFS μεχρι να φτάσουμε στο όριο βάθους depthLimit
         while (tmpNode.depth == maxdepth):
-            # Όσο οι κόμβοι που πάμε να επετκείνουμε ειναι στο οριο βάθους, τους επιλέγουμε για έλεγχο αλλά δεν
-            #   επεκτείνουμε
+            # Όσο οι κόμβοι που πάμε να επεκτείνουμε είναι στο όριο βάθους,
+            # τους επιλέγουμε για έλεγχο αλλά δεν επεκτείνουμε
             if (len(queue) == 0):
-                # Και άμα καταλήξει η ουρά μας να μην έχει άλλους κόμβους
-                previouslyVisited = []  # Αδίαζουμε την previouslyVisitided
+                # Όταν το μέγεθος της ουράς μηδενιστεί
+                previouslyVisited = []  # Αδειάζουμε την previouslyVisitided
                 tmpNode = startNode  # επιλέγουμε πάλι τον start node για επέκταση (επαννεκίνηση)
-                previouslyVisited.append(tmpNode)  # προσθέτουμε τον start node στην previuslyVisited
-                #   μιας και μετα το break, θα επεκταθεί ο startNode και θα επιλεχθεί ο επόμενος στην ουρα
-                maxdepth += 1  # και αυξάνουμε το όριο βάθους κατα ένα
+                previouslyVisited.append(tmpNode)
+                # μετα το break, θα επεκταθεί ο startNode και θα επιλεχθεί ο επόμενος στην ουρα
+                maxdepth += 1  # αυξάνουμε το όριο βάθους κατα ένα
                 repeats = 1
                 break  # Βγαινουμε απο την εσωτερική while
 
-
+            # τροποποίηση της queue για να επιλέγει τυχαία ισάξια ενέργεια
+            queue = sameValueMoves(queue, "cost")
             tmpNode = queue[0]
-            # Εφόσων δεν έχει αδείαση η ουρά, επιλέγουμε για επέκταση τον επόμενο κόμβο στην ουρα
+            # Εφόσον δεν έχει αδείασει η ουρά, επιλέγουμε για επέκταση τον επόμενο κόμβο στην ουρα
             previouslyVisited.append(queue.pop(0))
-            # Αφαιρούμε απο την ουρα τον κόμβο που επιλέξαμε και τον προσθέτουμε στην priviulyVisited
+            # Αφαιρούμε απο την ουρα τον κόμβο που επιλέξαμε και τον προσθέτουμε στην previouslyVisited
 
         # Για να υλοποιηθεί ο DFS βάζουμε τα παιδία μπροστά απο τους υπόλοιπους κόμβους που είχε η queue
         queue = makeQueue(tmpNode) + queue
 
         # Επιλέγουμε τον επόμενο κόμβο για επέκταση
+        # τροποποίηση της queue για να επιλέγει τυχαία ισάξια ενέργεια
+        queue = sameValueMoves(queue, "cost")
         tmpNode = queue[0]
         repeats += 1
 
     print("Done, goal node data:")
     tmpNode.printclass()
-    print("Total nodes created:", counter, "and to max depth:", maxdepth)
+    print("Total nodes created:", counter, "Μax depth:", maxdepth)
     print("Total nodes expanded:(in the last search)", repeats)
     print("Path to the GoalNode:", backTracePath(tmpNode))
 
@@ -310,8 +307,8 @@ def Astar(queue):
     """ Υλοποιήση του A*, Επιλέγει τον κόμβο με το μικρότερο κόστος
         :param: queue, Ουρα στην οποία θα επεκτείνει (global Πινακας),
                 με πρώτο στοιχείο ο κόμβος απο τον οποίο θα ξεκινήσει η επέκταση"""
-    # Ο A* είναι ακριβώς όπως ο UCS αλλά κάνει sort με βάση την heuristic τιμή
 
+    # Ο A* είναι ακριβώς όπως ο UCS αλλά κάνει sort με βάση την heuristic τιμή
     previouslyvisited = []
     repeats = 0
     tmpNode = queue[0]
@@ -319,7 +316,8 @@ def Astar(queue):
         queue.extend(makeQueue(tmpNode))
         previouslyvisited.append(queue.pop(0))
         queue = sorted(queue, key=lambda Nodes: Nodes.Hvalue)
-        # Η μόνη αλλαγή που κάνουμε για τον Astart είναι να ταξινομούμε κατα την heuristic τιμή
+        # Η μόνη αλλαγή που κάνουμε για τον Astar είναι να ταξινομούμε κατα την heuristic τιμή
+        # τροποποίηση της queue για να επιλέγει τυχαία ισάξια ενέργεια (αλλά με βάση την heuristic τιμή)
         queue = sameValueMoves(queue, "hvalue")
         tmpNode = queue[0]
         repeats += 1
@@ -337,8 +335,8 @@ def main():
     """Main"""
 
     global totalColumns, totalLines, labyrinth, counter
-    # (Parsing) Ανάγνωση του αρχείου με τον λαβύρινθο
-    file1 = open('labyrinth.txt', 'r') # πρέπει να είναι στον ίδιο φάκελο με το αρχείο main.py
+    # (Parsing) Ανάγνωση του αρχείου που περιέχει τον λαβύρινθο
+    file1 = open('labyrinth.txt', 'r')
     # Δίαβασμα του αρχείου
     lst = []
     for i in file1:
@@ -346,7 +344,7 @@ def main():
             if (j == '\n'):  # αγνούμε τον κρυφό \n χαρακτήρα
                 continue
             lst.append(j)  # Προσωρινός πίνακας που κρατάει τα στοιχεία της κάθε γραμμής
-        labyrinth.append(lst)  # Ο προσωρινος πίνακας, γίνεται γραμμή στον τελικό
+        labyrinth.append(lst)  # ο προσωρινος πίνακας, γίνεται γραμμή στον τελικό
         lst = []
         # εν τέλει έχουμε εναν 2d πίνακα
 
@@ -364,15 +362,13 @@ def main():
     print("Ο λαβύρινθος σε μορφή πίνακα")
     for i in labyrinth:
         print(i)
-        # Εκτυπώνουμε τον κάθε υπο-πίνακα ξεχωριστά
-
 
     # Υπολογισμός των heuristic τιμών
     heuristic()
 
     # Εκτύπωση των heuristic τιμών
-    print()  # Κενή γραμμή
-    print("Οι τιμές των hueristic τιμών για κάθε θέση του πίνακα")
+    print("-------")
+    print("Οι τιμές των hueristic για κάθε θέση του πίνακα")
     for i in heuristicTable:
         print(i)
 
@@ -380,16 +376,16 @@ def main():
     startNode = Nodes([0, 0],
                       Nodes([-1, -1], [-1, -1], -1, -1, "null", -1),
                       # για fathernode στον startnode θέτουμε ενα άλλο αντικείμενο τύπου Nodes
-                      0, 0, "S", -1)  # Είχε 15 στο hvalue ο παλ
+                      0, 0, "S", -1)
     queue.append(startNode)
 
-    # print()  # Κενή γραμμή
-    # print("Running UCS")
-    # ucs(queue)
-    # counter = 0
-    # queue = []
-    # queue.append(startNode)
-    # # Αρχικοίηση των τιμών μετά απο κάθε εκτέλεση των αλγωρίθμων
+    print("-------")
+    print("Running UCS")
+    ucs(queue)
+    counter = 0
+    queue = []
+    queue.append(startNode)
+    # Αρχικοίηση των τιμών μετά απο κάθε εκτέλεση των αλγωρίθμων
 
     print("Running A*")
     Astar(queue)
@@ -397,9 +393,9 @@ def main():
     queue = []
     queue.append(startNode)
 
-    # print()
-    # print("Running IDS")
-    # ids(queue)
+    print("-------")
+    print("Running IDS")
+    ids(queue)
 
 
 if (__name__ == '__main__'):
